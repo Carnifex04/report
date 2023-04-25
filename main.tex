@@ -1,0 +1,74 @@
+\documentclass[12pt, a4paper]{book}
+
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo} 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tabularx}
+\usepackage{flafter}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{pgfplots}  
+\usetikzlibrary{patterns}
+\usepackage{emptypage}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{subfig}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{abbrvnat}
+
+\begin{document}
+
+    \sloppy
+
+    \frontmatter
+
+    \input{frontstuff.tex}
+
+    \pagestyle{plain} 
+
+    \tableofcontents
+
+    \cleardoublepage
+
+    %--------------------------------------------------------------------------------------
+    %	THESIS CONTENT - CHAPTERS
+    %--------------------------------------------------------------------------------------
+    \mainmatter
+
+    \setcounter{page}{1}
+
+    \def\thepage{\arabic{page}}
+
+    \include{Chapters/Chapter1}
+    \include{Chapters/Chapter2} 
+    \include{Chapters/Chapter3}
+    \include{Chapters/Chapter4} 
+    \include{Chapters/Chapter5} 
+
+    \include{Appendices/AppendixTemplate.tex}
+    \include{Appendices/AppendixB.tex}
+
+    \bibliography{Ref}
+    \cite{williams2011long}
+    \cite{investopediaWR}
+    \cite{williamsR}
+    \cite{algorithmic_trading_python}
+    \cite{lo1990}
+    \cite{alphavantage}
+    \cite{chande1995}
+    \cite{williams1966}
+    \cite{john2014}
+    \cite{morton2006algorithmic}
+    \cite{mendelson2018machine}
+    \cite{lo2010high}
+    \cite{chan2013algorithmic}
+    \cite{hasbrouck2013financial}
+
+
+\end{document}  

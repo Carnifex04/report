@@ -1,0 +1,156 @@
+% Chapter 3
+
+\chapter{Methodology}
+
+\label{Chapter3} % For referencing the chapter elsewhere, use \ref{Chapter3} 
+
+\section{Data Collection}
+The data used in the ASEE system is collected from the AlphaVantage API, a financial data provider that offers a wide range of financial data for various assets. The data collected includes daily stock prices, volumes, and other relevant indicators. AlphaVantage provides a secure and reliable platform for data collection and offers various benefits, such as:
+
+\begin{itemize}
+\item Real-time data availability
+\item Access to historical data
+\item Integration with various programming languages
+\item Customizable data retrieval options
+\end{itemize}
+
+The ASEE system collects data from AlphaVantage using a Python script that retrieves data in the form of JSON objects. These objects are then processed and stored in a database for further analysis and use in trading strategies.
+
+\section{Data Preprocessing}
+After the data has been collected from the AlphaVantage API, it is preprocessed to ensure that it is ready for use in the ASEE trading algorithms. The preprocessing involves removing missing data, handling outliers, and resampling the data to the desired frequency. The data is then split into training and testing sets, with the training set used to train the ASEE models, and the testing set used to evaluate the performance of the models.
+
+\section{Trading Strategies}
+The ASEE system implements several trading strategies that use various technical indicators to predict market trends and make profitable trades. The trading strategies used in the ASEE system are as follows:
+
+\subsection{William\%R + SMA&LMA}
+The William\%R indicator is a momentum indicator that measures overbought and oversold levels. The SMA and LMA are simple moving average and linear moving average indicators, respectively. The combination of these indicators can provide a more accurate signal for trading decisions.
+
+The strategy involves generating buy and sell signals based on the William\%R indicator and the SMA and LMA crossovers. A buy signal is generated when the William\%R indicator crosses above the oversold level and the SMA crosses above the LMA. A sell signal is generated when the William\%R indicator crosses below the overbought level and the SMA crosses below the LMA.
+
+The buy and sell signals are used to execute trades, with a stop loss and take profit order placed to manage risk. The stop loss order is triggered if the price moves against the trade, while the take profit order is triggered if the price moves in favor of the trade.
+
+The formula for William\%R is:
+\begin{equation}
+\%R = \frac{Highest High - Close}{Highest High - Lowest Low} \times -100
+\end{equation}
+
+where Highest High is the highest price over a given period, Lowest Low is the lowest price over a given period, and Close is the closing price for the current period.
+
+The formula for SMA is:
+\begin{equation}
+SMA = \frac{\sum_{i=1}^{n}Close_{i}}{n}
+\end{equation}
+
+where n is the number of periods and Close is the closing price for each period.
+
+The formula for LMA is:
+\begin{equation}
+LMA = \frac{\sum_{i=1}^{n}i \times Close_{i}}{\sum_{i=1}^{n}i}
+\end{equation}
+
+where n is the number of periods, i is the current period, and Close is the closing price for each period.
+
+\subsection{William\%R}
+The William \%R indicator is a momentum oscillator that measures the level of the closing price relative to the high-low range over a given period of time. The indicator oscillates from 0 to -100, with readings above -20 indicating overbought conditions and readings below -80 indicating oversold conditions. The formula for calculating the William \%R indicator is as follows:
+
+\begin{equation}
+\%R = \frac{(Highest High - Close)}{(Highest High - Lowest Low)} \times -100
+\end{equation}
+
+where:
+\begin{itemize}
+\item $Highest High$ is the highest price over a given period,
+\item $Lowest Low$ is the lowest price over a given period,
+\item $Close$ is the closing price of the current period.
+\end{itemize}
+
+The William \%R indicator oscillates between 0 and -100 and is plotted on a chart with an overbought level of -20 and an oversold level of -80. Readings above -20 are considered overbought, indicating that the market may be due for a price correction or reversal, while readings below -80 are considered oversold, indicating that the market may be due for a price increase or reversal.
+
+Traders often use the William \%R indicator to identify potential buy and sell signals. When the William \%R crosses above -80 from below, it may be a signal to buy, while when the William \%R crosses below -20 from above, it may be a signal to sell.
+
+\subsection{Volatility Breakout}
+The volatility breakout strategy is a well-known and widely used algorithmic trading strategy. It is based on the idea that when a stock's price starts moving sharply, the momentum will continue in the same direction for some time. The Volatility Breakout strategy is based on the concept that when the market experiences a sudden increase in volatility, a breakout is likely to occur. The strategy involves buying a stock when its price moves above a certain level of volatility and selling it when the price falls below that level. This strategy involves setting a percentage move expected, and generating signals once the target has been reached.
+
+Given a percentage move expected, the top and bottom of the range can be calculated as follows:
+
+\begin{equation}
+\text{Top Range} &= \text{Open} + \frac{\text{High} \times \text{Percentage}}{100}
+\end{equation}
+
+\begin{equation}
+\text{Bottom Range} &= \text{Open} - \frac{\text{Low} \times \text{Percentage}}{100}
+\end{equation}
+
+Once the range is calculated, the following columns are added to the dataframe:
+
+\begin{itemize}
+\item \textbf{Top of Range}: The top of the range calculated above.
+\item \textbf{Bottom of Range}: The bottom of the range calculated above.
+\item \textbf{Cross Above Range}: 1 if the closing price of an asset crosses above the top of the range, 0 otherwise.
+\item \textbf{Cross Below Range}: -1 if the closing price of an asset crosses below the bottom of the range, 0 otherwise.
+\end{itemize}
+
+The Long and Short signals are generated by taking the difference of the cross columns:
+
+\begin{equation}
+\text{Long Signal} &= \text{Cross Above Range} - \text{Cross Above Range}[-1]
+\end{equation}
+
+\begin{equation}
+\text{Short Signal} &= \text{Cross Below Range} - \text{Cross Below Range}[-1]
+\end{equation}
+
+The signals are then mapped to the following values:
+
+\begin{itemize}
+\item 2: Short
+\item -2: Exit
+\item 1: Long
+\item -1: Exit
+\item 0: None
+\end{itemize}
+
+The Long and Short signals are updated to reflect the mapping, and the resulting dataframe is returned. 
+The signals are then used to enter trades, and the trades are managed using a stop-loss and take-profit approach to risk management. The strategy is designed to capture large price movements by entering trades when the price breaks out of a range, and it is a popular strategy used by traders who seek to capture short-term price movements in financial markets.
+
+\section{Backtesting}
+
+Backtesting is the process of evaluating a trading strategy using historical data to simulate real-world performance. It involves applying the trading rules to past market data and measuring the resulting returns. The purpose of backtesting is to determine whether the trading strategy is profitable and to identify its strengths and weaknesses.
+
+The process of backtesting can be broken down into the following steps:
+
+\begin{enumerate}
+\item Define the trading strategy
+\item Collect historical market data
+\item Implement the trading strategy on the historical data
+\item Calculate the returns of the trading strategy
+\item Analyze the performance of the trading strategy
+\end{enumerate}
+
+There are several benefits to backtesting a trading strategy. It allows traders to:
+
+\begin{itemize}
+\item Evaluate the effectiveness of a trading strategy without risking real capital
+\item Identify potential flaws or weaknesses in the strategy before implementing it in real-time trading
+\item Optimize the parameters of a trading strategy to maximize returns
+\item Develop confidence in the trading strategy by observing its historical performance
+\end{itemize}
+
+To conduct a backtest, historical market data is needed. The data should be representative of the market conditions that the trading strategy will be applied to. The data should include price data, volume data, and any other relevant market data such as news releases or economic indicators.
+
+Once the historical data is collected, the trading strategy is implemented on the data. This involves applying the buy and sell rules to the data and generating signals that indicate when to buy and sell assets.
+
+The returns of the trading strategy are calculated by simulating the trading of the assets using the historical data. This involves calculating the portfolio value at each time step based on the signals generated by the trading strategy.
+
+The performance of the trading strategy can be analyzed using several metrics, such as:
+
+\begin{itemize}
+\item Total return
+\item Sharpe ratio
+\item Maximum drawdown
+\item Win/loss ratio
+\end{itemize}
+
+These metrics can provide insight into the profitability and risk of the trading strategy.
+
+In this project, we backtested three trading strategies using historical stock price data. The first strategy involved using a simple moving average crossover strategy. The second strategy involved using a momentum-based strategy. The third strategy involved using a range-based strategy. Each strategy was backtested using historical stock price data to evaluate its performance. The results of the backtests are discussed in the Results section.
